@@ -37,6 +37,26 @@ async function main() {
     console.log(`User "${user.name}" (${user.email}) → ${result.id ? 'Created' : 'Already exists'}`);
   }
 
+
+  await prisma.tenant.upsert({
+    where: { subdomain: '/' },
+    update: {},
+    create: {
+      template: {
+        create: {
+          name: 'saas',
+          type: 'service',
+          createdBy: 'system'
+        }
+      },
+      name: 'holu',
+      colors: [],
+      subdomain: '/',
+      createdBy: 'system',
+    }
+  });
+  console.log(`tenant holu crate`)
+
   console.log("Seed done");
 }
 

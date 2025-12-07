@@ -11,5 +11,6 @@ export const TenantSelect = {
   notionDbId: true,
   name: true,
   image: true,
-  colors: true
+  colors: true,
+  subdomain: true,
 };

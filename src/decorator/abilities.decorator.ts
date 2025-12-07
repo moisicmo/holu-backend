@@ -1,10 +1,10 @@
-import { TypeSubject } from '@/common';
+import { TypeAction, TypeSubject } from '@/common';
 import { SetMetadata } from '@nestjs/common';
 
 export const CHECK_ABILITY = 'check_ability';
 
 export interface RequiredRule {
-  action: string;
+  action: TypeAction;
   subject: TypeSubject;
   conditions?: any;
 }

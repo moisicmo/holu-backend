@@ -8,3 +8,9 @@ export enum TypeSubject {
   address,
   radio,
 }
+export enum TypeAction {
+  leer,
+  crear,
+  editar,
+  eliminar,
+}
