@@ -1,8 +1,11 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateHabitProgressDto } from './dto/create-habit-progress.dto';
 import { UpdateHabitDto } from './dto/update-habit.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import { CreateHabitDto } from './dto/create-habit.dto';
+import { Prisma } from '@/generated/prisma/client';
+import { UserHabitSelect, UserHabitType } from './entities/habit.entity';
+import { PaginationDto, PaginationResult } from '@/common';
 
 @Injectable()
 export class HabitsService {
@@ -86,9 +89,52 @@ export class HabitsService {
     }
   }
 
-  findAll() {
-    return `This action returns all habit`;
+  async findAll(
+    userId: string,
+    paginationDto: PaginationDto,
+  ): Promise<PaginationResult<UserHabitType>> {
+    try {
+      const { page = 1, limit = 10, keys = '' } = paginationDto;
+
+      // 🔹 Filtro final
+      const whereClause: Prisma.UserHabitWhereInput = {
+        userId,
+        ...(keys && {
+          title: {
+            contains: keys,
+            mode: Prisma.QueryMode.insensitive,
+          },
+        }),
+      };
+
+      // 🔹 Total
+      const total = await this.prisma.userHabit.count({
+        where: whereClause,
+      });
+
+      const lastPage = Math.ceil(total / limit);
+
+      // 🔹 Datos
+      const data = await this.prisma.userHabit.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        where: whereClause,
+        orderBy: { createdAt: 'asc' },
+        select: UserHabitSelect,
+      });
+
+      return {
+        data,
+        meta: { total, page, lastPage },
+      };
+    } catch (error) {
+      console.error('❌ Error en findAll(UserHabit):', error);
+      throw new InternalServerErrorException(
+        'Hubo un error al listar los hábitos',
+      );
+    }
   }
+
 
   findOne(id: string) {
     return `This action returns a #${id} habit`;

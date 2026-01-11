@@ -415,11 +415,11 @@ model UserHabit {
   id        String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId    String          @map("user_id") @db.Uuid
   title     String
+  type      HabitType       @default(general)
   createdAt DateTime        @default(now()) @map("created_at")
   updatedAt DateTime        @default(now()) @updatedAt @map("updated_at")
   createdBy String          @map("created_by")
   updatedBy String?         @map("updated_by")
-  type      HabitType       @default(general)
   progress  HabitProgress[]
 
   @@map("user_habits")
