@@ -20,7 +20,7 @@ export class CreateUserDto {
   provider: AuthProviderType;
 
   @IsString()
-  @ApiProperty({ example: 'https://holufitserve-production.up.railway.app/static/animals/crocodile.png', description: 'url de la imagen' })
+  @ApiProperty({ example: 'https://holu-backend-production.up.railway.app/static/avatars/crocodile.png', description: 'url de la imagen' })
   image: string;
 
   @IsString()

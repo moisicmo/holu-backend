@@ -5,7 +5,7 @@ import { join } from 'path';
 @Injectable()
 export class AvatarsService {
   findAll(): string[] {
-    const avatarsDir = join(__dirname, '..', '..', 'public', 'animals');
+    const avatarsDir = join(__dirname, '..', '..', 'public', 'avatars');
     const baseUrl = 'https://holu-backend-production.up.railway.app/static/avatars';
 
     const files = readdirSync(avatarsDir);
