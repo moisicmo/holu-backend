@@ -23,9 +23,10 @@ export class ActivitiesController {
     return this.activitiesService.createProgress(user.email, createActivityProgressDto);
   }
 
-  @Get()
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.activitiesService.findAll(paginationDto);
+  @Get('/user/:userId')
+  @checkAbilities({ action: TypeAction.leer, subject: TypeSubject.activities })
+  findAll(@Param('userId') userId: string, @Query() paginationDto: PaginationDto) {
+    return this.activitiesService.findAllByUser(userId, paginationDto);
   }
 
   @Get(':id')

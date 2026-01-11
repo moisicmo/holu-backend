@@ -12,7 +12,6 @@ export const HabitProgressSelect = {
 
 export const UserHabitSelect = {
   id: true,
-  userId: true,
   title: true,
   type: true,
   progress: {

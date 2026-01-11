@@ -92,13 +92,22 @@ export class ActivitiesService {
     }
   }
 
-  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<DailyActivityType>> {
+  async findAllByUser(
+    userId: string,
+    paginationDto: PaginationDto,
+  ): Promise<PaginationResult<DailyActivityType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
       // 🔹 Armar el filtro final para Prisma
       const whereClause: Prisma.DailyActivityWhereInput = {
-        ...(keys ? { title: { contains: keys, mode: Prisma.QueryMode.insensitive } } : {}),
+        userId,
+        ...(keys && {
+          title: {
+            contains: keys,
+            mode: Prisma.QueryMode.insensitive,
+          },
+        }),
       };
 
       // 🔹 Paginación

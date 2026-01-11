@@ -89,7 +89,7 @@ export class HabitsService {
     }
   }
 
-  async findAll(
+  async findAllByUser(
     userId: string,
     paginationDto: PaginationDto,
   ): Promise<PaginationResult<UserHabitType>> {

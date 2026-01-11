@@ -26,7 +26,7 @@ export class HabitsController {
   @Get('/user/:userId')
   @checkAbilities({ action: TypeAction.leer, subject: TypeSubject.habit })
   findAll(@Param('userId') userId: string, @Query() paginationDto: PaginationDto) {
-    return this.habitService.findAll(userId, paginationDto);
+    return this.habitService.findAllByUser(userId, paginationDto);
   }
 
   @Get(':id')
