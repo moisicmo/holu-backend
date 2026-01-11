@@ -14,8 +14,8 @@ export class HabitsController {
   @Public()
   @Post()
   @checkAbilities({ action: TypeAction.crear, subject: TypeSubject.habit })
-  create(@CurrentUser() user: JwtPayload, @Body() createHabitDto: CreateHabitDto) {
-    return this.habitService.create(user.email, createHabitDto);
+  create( @Body() createHabitDto: CreateHabitDto) {
+    return this.habitService.create('evaluation', createHabitDto);
   }
 
   @Post('progress')

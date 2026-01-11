@@ -14,8 +14,8 @@ export class ActivitiesController {
   @Public()
   @Post()
   @checkAbilities({ action: TypeAction.crear, subject: TypeSubject.activities })
-  create(@CurrentUser() user: JwtPayload, @Body() createActivityDto: CreateActivityDto) {
-    return this.activitiesService.create(user.email, createActivityDto);
+  create( @Body() createActivityDto: CreateActivityDto) {
+    return this.activitiesService.create('evaluation', createActivityDto);
   }
 
   @Post('progress')
