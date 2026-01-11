@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { HabitsService } from './habits.service';
 import { CreateHabitProgressDto } from './dto/create-habit-progress.dto';
 import { UpdateHabitDto } from './dto/update-habit.dto';
-import { checkAbilities, CurrentUser, Public } from '@/decorator';
+import { checkAbilities, CurrentUser } from '@/decorator';
 import { TypeAction, TypeSubject } from '@/common';
 import { JwtPayload } from '@/modules/identity-service/auth/entities/jwt-payload.interface';
 import { CreateHabitDto } from './dto/create-habit.dto';
@@ -11,11 +11,10 @@ import { CreateHabitDto } from './dto/create-habit.dto';
 export class HabitsController {
   constructor(private readonly habitService: HabitsService) { }
 
-  @Public()
   @Post()
   @checkAbilities({ action: TypeAction.crear, subject: TypeSubject.habit })
-  create( @Body() createHabitDto: CreateHabitDto) {
-    return this.habitService.create('evaluation', createHabitDto);
+  create(@CurrentUser() user: JwtPayload,  @Body() createHabitDto: CreateHabitDto) {
+    return this.habitService.create(user.email, createHabitDto);
   }
 
   @Post('progress')
