@@ -21,6 +21,7 @@ import { RadiosModule } from './modules/holu-prime/radios/radios.module';
 import { ActivitiesModule } from './modules/holu-prime/activities/activities.module';
 import { PhisicalRecordsModule } from './modules/holu-prime/physical-records/physical-records.module';
 import { RoutinesModule } from './modules/holu-prime/routines/routines.module';
+import { AvatarsModule } from './modules/identity-service/avatars/avatars.module';
 @Module({
   imports: [
     PrismaModule,
@@ -42,6 +43,7 @@ import { RoutinesModule } from './modules/holu-prime/routines/routines.module';
     RoutinesModule,
     HabitsModule,
     ActivitiesModule,
+    AvatarsModule,
   ],
   providers: [
     PrismaService,
