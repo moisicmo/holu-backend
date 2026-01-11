@@ -1,41 +1,41 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
-import { PhisicalRecordsService } from './physical-records.service';
-import { CreatePhisicalRecordDto } from './dto/create-physical-record.dto';
-import { UpdatePhisicalRecordDto } from './dto/update-physical-record.dto';
+import { PhysicalRecordsService } from './physical-records.service';
+import { CreatePhysicalRecordDto } from './dto/create-physical-record.dto';
+import { UpdatePhysicalRecordDto } from './dto/update-physical-record.dto';
 import { checkAbilities, CurrentUser } from '@/decorator';
 import { JwtPayload } from '@/modules/identity-service/auth/entities/jwt-payload.interface';
 import { PaginationDto, TypeAction, TypeSubject } from '@/common';
 
-@Controller('phisical-records')
-export class PhisicalRecordsController {
-  constructor(private readonly phisicalRecordsService: PhisicalRecordsService) { }
+@Controller('physical-records')
+export class PhysicalRecordsController {
+  constructor(private readonly physicalRecordsService: PhysicalRecordsService) { }
 
   @Post()
   @checkAbilities({ action: TypeAction.crear, subject: TypeSubject.physicalRecord })
-  create(@CurrentUser() user: JwtPayload, @Body() createPhisicalRecordDto: CreatePhisicalRecordDto) {
-    return this.phisicalRecordsService.create(user.email, createPhisicalRecordDto);
+  create(@CurrentUser() user: JwtPayload, @Body() createPhysicalRecordDto: CreatePhysicalRecordDto) {
+    return this.physicalRecordsService.create(user.email, createPhysicalRecordDto);
   }
 
   @Get()
   findAll(@Query() paginationDto: PaginationDto) {
-    return this.phisicalRecordsService.findAll(paginationDto);
+    return this.physicalRecordsService.findAll(paginationDto);
   }
 
   @Get(':id')
   @checkAbilities({ action: TypeAction.leer, subject: TypeSubject.physicalRecord })
   findOne(@Param('id') id: string) {
-    return this.phisicalRecordsService.findOne(id);
+    return this.physicalRecordsService.findOne(id);
   }
 
   @Patch(':id')
   @checkAbilities({ action: TypeAction.editar, subject: TypeSubject.physicalRecord })
-  update(@Param('id') id: string, @Body() updatePhisicalRecordDto: UpdatePhisicalRecordDto) {
-    return this.phisicalRecordsService.update(id, updatePhisicalRecordDto);
+  update(@Param('id') id: string, @Body() updatePhysicalRecordDto: UpdatePhysicalRecordDto) {
+    return this.physicalRecordsService.update(id, updatePhysicalRecordDto);
   }
 
   @Delete(':id')
   @checkAbilities({ action: TypeAction.eliminar, subject: TypeSubject.physicalRecord })
   remove(@Param('id') id: string) {
-    return this.phisicalRecordsService.remove(id);
+    return this.physicalRecordsService.remove(id);
   }
 }

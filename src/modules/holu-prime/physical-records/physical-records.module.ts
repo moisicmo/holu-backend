@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { PhisicalRecordsService } from './physical-records.service';
-import { PhisicalRecordsController } from './physical-records.controller';
+import { PhysicalRecordsService } from './physical-records.service';
+import { PhysicalRecordsController } from './physical-records.controller';
 import { PrismaModule } from '@/prisma/prisma.module';
 
 @Module({
-  controllers: [PhisicalRecordsController],
-  providers: [PhisicalRecordsService],
+  controllers: [PhysicalRecordsController],
+  providers: [PhysicalRecordsService],
   imports: [PrismaModule],
 })
-export class PhisicalRecordsModule { }
+export class PhysicalRecordsModule { }

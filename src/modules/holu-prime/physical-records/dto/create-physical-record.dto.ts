@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
 
-export class CreatePhisicalRecordDto {
+export class CreatePhysicalRecordDto {
 
   @IsUUID()
   @ApiProperty({

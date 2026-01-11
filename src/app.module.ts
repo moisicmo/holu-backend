@@ -23,7 +23,7 @@ import { InvoicesModule } from './modules/subscription-service/invoices/invoices
 import { HabitsModule } from './modules/holu-prime/habits/habits.module';
 import { RadiosModule } from './modules/holu-prime/radios/radios.module';
 import { ActivitiesModule } from './modules/holu-prime/activities/activities.module';
-import { PhisicalRecordsModule } from './modules/holu-prime/physical-records/physical-records.module';
+import { PhysicalRecordsModule } from './modules/holu-prime/physical-records/physical-records.module';
 import { RoutinesModule } from './modules/holu-prime/routines/routines.module';
 @Module({
   imports: [
@@ -47,7 +47,7 @@ import { RoutinesModule } from './modules/holu-prime/routines/routines.module';
     InvoicesModule,
     
     RadiosModule,
-    PhisicalRecordsModule,
+    PhysicalRecordsModule,
     RoutinesModule,
     HabitsModule,
     ActivitiesModule,

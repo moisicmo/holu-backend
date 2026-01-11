@@ -7,7 +7,7 @@ import { TypeAction, TypeSubject } from '@/common';
 import { JwtPayload } from '@/modules/identity-service/auth/entities/jwt-payload.interface';
 import { CreateHabitDto } from './dto/create-habit.dto';
 
-@Controller('habit')
+@Controller('habits')
 export class HabitsController {
   constructor(private readonly habitService: HabitsService) { }
 

@@ -1,13 +1,13 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import { CreatePhisicalRecordDto as CreatePhysicalRecordDto } from './dto/create-physical-record.dto';
-import { UpdatePhisicalRecordDto } from './dto/update-physical-record.dto';
+import { CreatePhysicalRecordDto as CreatePhysicalRecordDto } from './dto/create-physical-record.dto';
+import { UpdatePhysicalRecordDto } from './dto/update-physical-record.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import { PhysicalRecordType, PhysicalRecordTypeSelect } from './entities/physical-record.entity';
 import { PaginationDto, PaginationResult } from '@/common';
 import { Prisma } from '@/generated/prisma/client';
 
 @Injectable()
-export class PhisicalRecordsService {
+export class PhysicalRecordsService {
   constructor(
     private readonly prisma: PrismaService,
   ) { }
@@ -66,14 +66,14 @@ export class PhisicalRecordsService {
   }
 
   findOne(id: string) {
-    return `This action returns a #${id} phisicalRecord`;
+    return `This action returns a #${id} physicalRecord`;
   }
 
-  update(id: string, updatePhisicalRecordDto: UpdatePhisicalRecordDto) {
-    return `This action updates a #${id} phisicalRecord`;
+  update(id: string, updatePhysicalRecordDto: UpdatePhysicalRecordDto) {
+    return `This action updates a #${id} physicalRecord`;
   }
 
   remove(id: string) {
-    return `This action removes a #${id} phisicalRecord`;
+    return `This action removes a #${id} physicalRecord`;
   }
 }
