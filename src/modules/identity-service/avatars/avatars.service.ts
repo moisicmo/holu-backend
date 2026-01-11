@@ -5,8 +5,8 @@ import { join } from 'path';
 @Injectable()
 export class AvatarsService {
   findAll(): string[] {
-    const avatarsDir = join(__dirname, '..', '..', '..', 'public', 'avatars');
-
+    const avatarsDir = join(__dirname, '..', '..', '..', '..', 'public', 'avatars');
+    console.log(avatarsDir)
     const files = readdirSync(avatarsDir);
 
     // Opcional: filtrar solo imágenes .png o .jpg
