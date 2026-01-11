@@ -5,12 +5,16 @@ import { join } from 'path';
 @Injectable()
 export class AvatarsService {
   findAll(): string[] {
-    const avatarsDir = join(__dirname, '..', '..', '..', '..', 'public', 'avatars');
-    console.log(avatarsDir)
+    const avatarsDir = join(process.cwd(), 'public', 'avatars');
+
     const files = readdirSync(avatarsDir);
 
-    // Opcional: filtrar solo imágenes .png o .jpg
-    const images = files.filter(file => file.endsWith('.png') || file.endsWith('.jpg') || file.endsWith('.webp'));
+    const images = files.filter(
+      file =>
+        file.endsWith('.png') ||
+        file.endsWith('.jpg') ||
+        file.endsWith('.webp'),
+    );
 
     return images;
   }
