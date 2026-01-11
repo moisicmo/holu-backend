@@ -30,13 +30,22 @@ export class PhysicalRecordsService {
     }
   }
 
-  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<PhysicalRecordType>> {
+  async findAllByUser(
+    userId: string,
+    paginationDto: PaginationDto,
+  ): Promise<PaginationResult<PhysicalRecordType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
       // 🔹 Armar el filtro final para Prisma
       const whereClause: Prisma.PhysicalRecordWhereInput = {
-        ...(keys ? { note: { contains: keys, mode: Prisma.QueryMode.insensitive } } : {}),
+        userId,
+        ...(keys && {
+          note: {
+            contains: keys,
+            mode: Prisma.QueryMode.insensitive,
+          },
+        }),
       };
 
       // 🔹 Paginación
@@ -58,10 +67,10 @@ export class PhysicalRecordsService {
         meta: { total, page, lastPage },
       };
     } catch (error) {
-      console.error('❌ Error en findAll(Branch):', error);
+      console.error('❌ Error en findAll(PhysicalRecord):', error);
       // Manejo de errores personalizado
       if (error instanceof NotFoundException) throw error;
-      throw new InternalServerErrorException('Hubo un error al listar las sucursales');
+      throw new InternalServerErrorException('Hubo un error al lista el historial fisico segun el usuario');
     }
   }
 

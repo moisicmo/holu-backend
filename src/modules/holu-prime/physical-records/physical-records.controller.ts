@@ -12,13 +12,14 @@ export class PhysicalRecordsController {
 
   @Post()
   @checkAbilities({ action: TypeAction.crear, subject: TypeSubject.physicalRecord })
-  create( @CurrentUser() user: JwtPayload,@Body() createPhysicalRecordDto: CreatePhysicalRecordDto) {
+  create(@CurrentUser() user: JwtPayload, @Body() createPhysicalRecordDto: CreatePhysicalRecordDto) {
     return this.physicalRecordsService.create(user.email, createPhysicalRecordDto);
   }
 
-  @Get()
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.physicalRecordsService.findAll(paginationDto);
+  @Get('/user/:userId')
+  @checkAbilities({ action: TypeAction.leer, subject: TypeSubject.physicalRecord })
+  findAll(@Param('userId') userId: string, @Query() paginationDto: PaginationDto) {
+    return this.physicalRecordsService.findAllByUser(userId, paginationDto);
   }
 
   @Get(':id')
