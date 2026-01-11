@@ -3,14 +3,26 @@ export enum TypeSubject {
   permission,
   role,
   user,
+  template,
   tenant,
   branch,
   address,
   radio,
+  habit,
+  activities,
+  physicalRecord,
 }
 export enum TypeAction {
   leer,
   crear,
   editar,
   eliminar,
+}
+
+export enum AuthProviderType {
+  email,
+  google,
+  facebook,
+  apple,
+  phone,
 }

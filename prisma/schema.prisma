@@ -14,39 +14,93 @@ datasource db {
   provider = "postgresql"
 }
 
+model Radio {
+  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  categoryId  String        @map("category_id") @db.Uuid
+  stationUUID String?       @unique @map("station_uuid")
+  name        String
+  url         String
+  resolvedUrl String?       @map("resolved_url")
+  image       String?
+  description String?
+  bitrate     Int
+  codec       String
+  isHls       Boolean       @default(false)
+  isOnline    Boolean       @default(true)
+  lastCheck   DateTime?
+  lastCheckOk Boolean       @default(true) @map("last_check_ok")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @default(now()) @updatedAt @map("updated_at")
+  createdBy   String        @map("created_by")
+  updatedBy   String?       @map("updated_by")
+  ratings     RadioRating[]
+  category    RadioCategory @relation(fields: [categoryId], references: [id])
+
+  @@map("radios")
+}
+
+model RadioCategory {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  createdBy String   @map("created_by")
+  updatedBy String?  @map("updated_by")
+  radios    Radio[]
+}
+
+model RadioRating {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  radioId   String   @map("radio_id") @db.Uuid
+  rating    Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  createdBy String   @map("created_by")
+  updatedBy String?  @map("updated_by")
+  user      User     @relation(fields: [userId], references: [id])
+  radio     Radio    @relation(fields: [radioId], references: [id])
+
+  @@map("radio_ratings")
+}
+
 // Identity
 model User {
-  id             String        @id @default(cuid())
+  id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   image          String?
-  numberDocument String?       @map("number_document")
-  typeDocument   TypeDocument? @default(dni) @map("type_document")
-  name           String        @db.VarChar
-  lastName       String        @map("last_name") @db.VarChar
-  gender         Gender
-  email          String        @unique
+  numberDocument String?        @map("number_document")
+  typeDocument   TypeDocument?  @default(dni) @map("type_document")
+  name           String         @db.VarChar
+  lastName       String         @map("last_name") @db.VarChar
+  gender         Gender?
+  email          String         @unique
   birthDate      DateTime?
   password       String
-  createdAt      DateTime      @default(now()) @map("created_at")
-  updatedAt      DateTime      @default(now()) @updatedAt @map("updated_at")
-  createdBy      String        @map("created_by")
-  active         Boolean       @default(true)
-
-  roles         UserRole[]
-  authProviders AuthProvider[]
-  authSessions  AuthSession[]
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @default(now()) @updatedAt @map("updated_at")
+  createdBy      String         @map("created_by")
+  updatedBy      String?        @map("updated_by")
+  active         Boolean        @default(true)
+  roles          UserRole[]
+  authProviders  AuthProvider[]
+  authSessions   AuthSession[]
+  radioRatings   RadioRating[]
 
   @@map("users")
 }
 
 model AuthSession {
-  id           String    @id @default(cuid())
-  userId       String    @map("user_id")
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId       String    @map("user_id") @db.Uuid
+  tokenFCM     String    @map("token_fcm")
   accessToken  String?   @map("access_token")
   refreshToken String    @unique @map("refresh_token")
   ipAddress    String    @map("ip_address")
   userAgent    String    @map("user_agent")
   createdAt    DateTime  @default(now()) @map("created_at")
   updatedAt    DateTime  @default(now()) @updatedAt @map("updated_at")
+  createdBy    String    @map("created_by")
+  updatedBy    String?   @map("updated_by")
   active       Boolean   @default(true)
   revokedAt    DateTime? @map("revoked_at")
   user         User      @relation(fields: [userId], references: [id])
@@ -55,30 +109,32 @@ model AuthSession {
 }
 
 model AuthProvider {
-  id         String           @id @default(cuid())
-  userId     String           @map("user_id")
-  provider   AuthProviderType // google, facebook, apple, email
-  providerId String?          @map("provider_id") // el ID del usuario en ese proveedor externo (por ejemplo el "sub" de Google)
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId     String   @map("user_id") @db.Uuid
+  provider   String // google, facebook, apple, email
+  providerId String?  @map("provider_id") // el ID del usuario en ese proveedor externo (por ejemplo el "sub" de Google)
   email      String? // puede coincidir o no con el email principal del usuario
-  verified   Boolean          @default(false)
-  createdAt  DateTime         @default(now()) @map("created_at")
-  updatedAt  DateTime         @default(now()) @updatedAt @map("updated_at")
-  createdBy  String           @map("created_by")
-  active     Boolean          @default(true)
-  user       User             @relation(fields: [userId], references: [id])
+  verified   Boolean  @default(false)
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @default(now()) @updatedAt @map("updated_at")
+  createdBy  String   @map("created_by")
+  updatedBy  String?  @map("updated_by")
+  active     Boolean  @default(true)
+  user       User     @relation(fields: [userId], references: [id])
 
   @@unique([provider, providerId])
   @@map("auth_providers")
 }
 
 model UserRole {
-  id        String   @id @default(cuid())
-  userId    String   @map("user_id")
-  roleId    String   @map("role_id")
-  branchId  String   @map("branch_id")
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  roleId    String   @map("role_id") @db.Uuid
+  branchId  String   @map("branch_id") @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
   createdBy String   @map("created_by")
+  updatedBy String?  @map("updated_by")
   active    Boolean  @default(true)
 
   user User @relation(fields: [userId], references: [id])
@@ -88,14 +144,14 @@ model UserRole {
 }
 
 model Role {
-  id        String   @id @default(cuid())
-  tenantId  String   @map("tenant_id")
-  name      String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
-  createdBy String   @map("created_by")
-  active    Boolean  @default(true)
-
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId    String       @map("tenant_id") @db.Uuid
+  name        String
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @default(now()) @updatedAt @map("updated_at")
+  createdBy   String       @map("created_by")
+  updatedBy   String?      @map("updated_by")
+  active      Boolean      @default(true)
   permissions Permission[]
   users       UserRole[]
 
@@ -103,38 +159,37 @@ model Role {
 }
 
 model Permission {
-  id        String   @id @default(cuid())
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   action    String
   subject   String
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
   createdBy String   @map("created_by")
+  updatedBy String?  @map("updated_by")
   active    Boolean  @default(true)
-
-  roles Role[]
+  roles     Role[]
 
   @@map("permissions")
 }
 
 // Tenant Service
-
 model Template {
-  id        String   @id @default(cuid())
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name      String
   type      String // "blog", "portfolio", "restaurant"
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
   createdBy String   @map("created_by")
+  updatedBy String?  @map("updated_by")
   active    Boolean  @default(true)
-
-  tenants Tenant[]
+  tenants   Tenant[]
 
   @@map("templates")
 }
 
 model Tenant {
-  id           String   @id @default(cuid())
-  templateId   String   @map("template_id")
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  templateId   String   @map("template_id") @db.Uuid
   notionApiKey String?
   notionDbId   String?
   name         String
@@ -144,24 +199,29 @@ model Tenant {
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @default(now()) @updatedAt @map("updated_at")
   createdBy    String   @map("created_by")
+  updatedBy    String?  @map("updated_by")
   active       Boolean  @default(true)
-
-  template Template @relation(fields: [templateId], references: [id])
-  branches Branch[]
+  template     Template @relation(fields: [templateId], references: [id])
+  branches     Branch[]
 
   @@map("tenants")
 }
 
 model Branch {
-  id        String   @id @default(cuid())
-  tenantId  String   @map("tenant_id")
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
   name      String
-  address   String?
+  city      String   @db.VarChar
+  zone      String   @db.VarChar
+  detail    String   @db.VarChar
+  latitude  Float?
+  longitude Float?
   phone     String?
   schedule  String[]
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
   createdBy String   @map("created_by")
+  updatedBy String?  @map("updated_by")
   active    Boolean  @default(true)
 
   tenant Tenant @relation(fields: [tenantId], references: [id])
@@ -171,45 +231,254 @@ model Branch {
 
 // Billing Service
 model Subscription {
-  id        String    @id @default(cuid())
-  tenantId  String    @map("tenant_id")
-  plan      String
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  planId    String    @map("plan_id") @db.Uuid
+  ownerId   String    @map("owner_id") @db.Uuid
+  ownerType OwnerType @map("owner_type")
   startDate DateTime  @default(now()) @map("start_date")
   endDate   DateTime? @map("end_date")
   renewsAt  DateTime? @map("renews_at")
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
   createdBy String    @map("created_by")
+  updatedBy String?   @map("updated_by")
   active    Boolean   @default(true)
-
-  payments Payment[]
+  plan      Plan      @relation(fields: [planId], references: [id])
+  payments  Payment[]
 
   @@map("subscriptions")
 }
 
+model Plan {
+  id           String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  branchId     String         @map("branch_id") @db.Uuid
+  name         String // "Ejecutivo", "Full", "Mensual"
+  description  String?
+  price        Float
+  duration     Int // en días (ej. 30)
+  accessDays   Int // cuántos días por semana
+  active       Boolean        @default(true)
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @default(now()) @updatedAt @map("updated_at")
+  createdBy    String         @map("created_by")
+  updatedBy    String?        @map("updated_by")
+  suscriptions Subscription[]
+
+  @@map("plans")
+}
+
+// Payment service
+model PaymentStates {
+  id               String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  paymentId        String           @map("payment_id") @db.Uuid
+  TypePaymentState TypePaymentState @default(PENDIENTE)
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @default(now()) @updatedAt @map("updated_at")
+  createdBy        String           @map("created_by")
+  updatedBy        String?          @map("updated_by")
+  payment          Payment          @relation(fields: [paymentId], references: [id])
+
+  @@map("payment_states")
+}
+
 model Payment {
-  id             String   @id @default(cuid())
-  subscriptionId String   @map("subscription_id")
+  id             String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   amount         Decimal
-  currency       String   @default("BOB")
-  status         String   @default("pending")
+  currency       String          @default("BOB")
   provider       String // ej: "pagofacil", "stripe", "manual"
   reference      String?
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at")
-  createdBy      String   @map("created_by")
-
-  subscription Subscription @relation(fields: [subscriptionId], references: [id])
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @default(now()) @updatedAt @map("updated_at")
+  createdBy      String          @map("created_by")
+  updatedBy      String?         @map("updated_by")
+  subscription   Subscription?   @relation(fields: [subscriptionId], references: [id])
+  subscriptionId String?         @db.Uuid
+  paymentStates  PaymentStates[]
+  invoice        Invoice?
 
   @@map("payments")
 }
 
-enum AuthProviderType {
-  email
-  google
-  facebook
-  apple
-  phone
+model Invoice {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  paymentId      String   @unique @map("payment_id") @db.Uuid
+  nameInvoice    String
+  numberDocument String
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at")
+  createdBy      String   @map("created_by")
+  updatedBy      String?  @map("updated_by")
+  payment        Payment  @relation(fields: [paymentId], references: [id])
+
+  @@map("invoices")
+}
+
+// holuPrime
+model PhysicalRecord {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  weightKg  Float    @map("weight_kg")
+  heightCm  Float    @map("height_cm")
+  note      String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  createdBy String   @map("created_by")
+  updatedBy String?  @map("updated_by")
+
+  @@map("physical_records")
+}
+
+model Equipment {
+  id          String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String // "Caminadora", "Bicicleta estática", "Press de banca"
+  description String?
+  type        String? // "cardio", "pesas", "funcional"
+  active      Boolean           @default(true)
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @default(now()) @updatedAt @map("updated_at")
+  createdBy   String            @map("created_by")
+  updatedBy   String?           @map("updated_by")
+  branches    BranchEquipment[]
+  eoutineDay  RoutineDay[]
+
+  @@map("equipments")
+}
+
+model BranchEquipment {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  branchId    String    @map("branch_id") @db.Uuid
+  equipmentId String    @map("equipment_id") @db.Uuid
+  image       String?
+  quantity    Int       @default(1)
+  available   Boolean   @default(true)
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
+  createdBy   String    @map("created_by")
+  updatedBy   String?   @map("updated_by")
+  equipment   Equipment @relation(fields: [equipmentId], references: [id])
+
+  @@unique([branchId, equipmentId])
+  @@map("branch_equipments")
+}
+
+model RoutineDay {
+  id         String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  routineId  String      @map("routine_id") @db.Uuid
+  dayOfWeek  Int         @map("day_of_week") // 1 = lunes, 2 = martes...
+  exercises  String[] // Lista de ejercicios del día
+  createdAt  DateTime    @default(now()) @map("created_at")
+  updatedAt  DateTime    @default(now()) @updatedAt @map("updated_at")
+  createdBy  String      @map("created_by")
+  updatedBy  String?     @map("updated_by")
+  Routine    Routine     @relation(fields: [routineId], references: [id])
+  equipments Equipment[] // Lista de equipo necesario para ese día
+
+  @@map("routine_days")
+}
+
+model Routine {
+  id            String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String
+  goal          String // qué objetivo cubre
+  level         String
+  genderTarget  Gender?       @map("gender_target") // opcional: male, female, all
+  description   String?
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @default(now()) @updatedAt @map("updated_at")
+  createdBy     String        @map("created_by")
+  updatedBy     String?       @map("updated_by")
+  routineDays   RoutineDay[] // ejercicios por día (ej: lunes, miércoles...)
+  assignedUsers UserRoutine[]
+
+  @@map("routines")
+}
+
+model UserRoutine {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  routineId String    @map("routine_id") @db.Uuid
+  isActive  Boolean   @default(true)
+  startedAt DateTime  @default(now()) @map("started_at")
+  endedAt   DateTime? @map("ended_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  createdBy String    @map("created_by")
+  updatedBy String?   @map("updated_by")
+  routine   Routine   @relation(fields: [routineId], references: [id])
+
+  @@map("user_routines")
+}
+
+model UserHabit {
+  id        String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String          @map("user_id") @db.Uuid
+  title     String
+  createdAt DateTime        @default(now()) @map("created_at")
+  updatedAt DateTime        @default(now()) @updatedAt @map("updated_at")
+  createdBy String          @map("created_by")
+  updatedBy String?         @map("updated_by")
+  type      HabitType       @default(general)
+  progress  HabitProgress[]
+
+  @@map("user_habits")
+}
+
+model HabitProgress {
+  id           String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  habitId      String         @map("habit_id") @db.Uuid
+  status       ProgressStatus
+  progressDate DateTime       @map("progress_date")
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @default(now()) @updatedAt @map("updated_at")
+  createdBy    String         @map("created_by")
+  updatedBy    String?        @map("updated_by")
+  habit        UserHabit      @relation(fields: [habitId], references: [id])
+
+  @@unique([habitId, progressDate])
+  @@map("habit_progresses")
+}
+
+model DailyActivity {
+  id        String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String             @map("user_id") @db.Uuid
+  title     String
+  time      String
+  createdAt DateTime           @default(now()) @map("created_at")
+  updatedAt DateTime           @default(now()) @updatedAt @map("updated_at")
+  createdBy String             @map("created_by")
+  updatedBy String?            @map("updated_by")
+  progress  ActivityProgress[]
+
+  @@map("daily_activities")
+}
+
+model ActivityProgress {
+  id           String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  activityId   String         @map("activity_id") @db.Uuid
+  status       ProgressStatus
+  progressDate DateTime       @map("progress_date")
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @default(now()) @updatedAt @map("updated_at")
+  createdBy    String         @map("created_by")
+  updatedBy    String?        @map("updated_by")
+  activity     DailyActivity  @relation(fields: [activityId], references: [id])
+
+  @@unique([activityId, progressDate])
+  @@map("activity_progresses")
+}
+
+enum OwnerType {
+  user
+  tenant
+}
+
+enum TypePaymentState {
+  PENDIENTE
+  RECHAZADO
+  ANULADO
+  FINALIZADO
 }
 
 enum TypeDocument {
@@ -223,4 +492,15 @@ enum Gender {
   male
   female
   other
+}
+
+enum HabitType {
+  general // hábitos principales
+  do_more // hacer más
+  do_less // hacer menos
+}
+
+enum ProgressStatus {
+  done
+  not_done
 }

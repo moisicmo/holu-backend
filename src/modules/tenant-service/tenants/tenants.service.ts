@@ -98,7 +98,7 @@ export class TenantsService {
   async remove(id: string) {
     await this.findOne(id);
 
-    return this.prisma.branch.update({
+    return this.prisma.tenant.update({
       where: { id },
       data: { active: false },
       select: TenantSelect,

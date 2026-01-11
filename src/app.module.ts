@@ -1,20 +1,55 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from '@/modules/identity-service/users/users.module';
-import { RolesModule } from '@/modules/identity-service/roles/roles.module';
-import { PermissionsModule } from '@/modules/identity-service/permissions/permissions.module';
-import { AuthModule } from '@/modules/identity-service/auth/auth.module';
+import { PrismaModule } from './prisma/prisma.module';
+import { PrismaService } from './prisma/prisma.service';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './guard/auth.guard';
+import { CloudinaryModule } from './common/cloudinary/cloudinary.module';
 
-import { TenantsModule } from '@/modules/tenant-service/tenants/tenants.module';
-import { BranchesModule } from '@/modules/tenant-service/branches/branches.module';
-import { TemplatesModule } from '@/modules/tenant-service/templates/templates.module';
+import { GoogledriveModule } from './common/googledrive/googledrive.module';
+import { GmailModule } from './common/gmail/gmail.module';
+import { AuthModule } from './modules/identity-service/auth/auth.module';
+import { UsersModule } from './modules/identity-service/users/users.module';
 
-import { SubscriptionsModule } from '@/modules/subscription-service/subscriptions/subscriptions.module';
-import { PlansModule } from '@/modules/subscription-service/plans/plans.module';
-import { PaymentsModule } from '@/modules/subscription-service/payments/payments.module';
+import { TemplatesModule } from './modules/tenant-service/templates/templates.module';
+import { TenantsModule } from './modules/tenant-service/tenants/tenants.module';
+import { BranchesModule } from './modules/tenant-service/branches/branches.module';
 
+import { InvoicesModule } from './modules/subscription-service/invoices/invoices.module';
+
+import { HabitsModule } from './modules/holu-prime/habits/habits.module';
+import { RadiosModule } from './modules/holu-prime/radios/radios.module';
+import { ActivitiesModule } from './modules/holu-prime/activities/activities.module';
+import { PhisicalRecordsModule } from './modules/holu-prime/physical-records/physical-records.module';
+import { RoutinesModule } from './modules/holu-prime/routines/routines.module';
 @Module({
-  imports: [UsersModule, RolesModule, PermissionsModule, TenantsModule, BranchesModule, SubscriptionsModule, TemplatesModule, AuthModule, PlansModule, PaymentsModule],
-  controllers: [],
-  providers: [],
+  imports: [
+    PrismaModule,
+    CloudinaryModule,
+    GoogledriveModule,
+    GmailModule,
+
+    AuthModule,
+    UsersModule,
+
+    TemplatesModule,
+    TenantsModule,
+    BranchesModule,
+
+    InvoicesModule,
+    
+    RadiosModule,
+    PhisicalRecordsModule,
+    RoutinesModule,
+    HabitsModule,
+    ActivitiesModule,
+  ],
+  providers: [
+    PrismaService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
+  exports: [PrismaService],
 })
-export class AppModule { }
+export class AppModule {}

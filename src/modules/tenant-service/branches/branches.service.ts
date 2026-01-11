@@ -1,26 +1,102 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateBranchDto } from './dto/create-branch.dto';
 import { UpdateBranchDto } from './dto/update-branch.dto';
+import { PaginationDto, PaginationResult } from '@/common';
+import { BranchSelect, BranchType } from './entities/branch.entity';
+import { Prisma } from '@/generated/prisma/client';
+import { PrismaService } from '@/prisma/prisma.service';
 
 @Injectable()
 export class BranchesService {
-  create(createBranchDto: CreateBranchDto) {
-    return 'This action adds a new branch';
+  constructor(
+    private readonly prisma: PrismaService,
+  ) { }
+
+  async create(email: string, createBranchDto: CreateBranchDto) {
+    try {
+      const { ...branchDto } = createBranchDto;
+
+      return await this.prisma.branch.create({
+        data: {
+          ...branchDto,
+          createdBy: email,
+        },
+        select: BranchSelect,
+      });
+
+    } catch (error) {
+      console.log(error);
+      throw new Error(`No se pudo crear el branch: ${error.message}`);
+    }
   }
 
-  findAll() {
-    return `This action returns all branches`;
+  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<BranchType>> {
+    try {
+      const { page = 1, limit = 10, keys = '' } = paginationDto;
+
+      // 🔹 Armar el filtro final para Prisma
+      const whereClause: Prisma.BranchWhereInput = {
+        ...(keys ? { name: { contains: keys, mode: Prisma.QueryMode.insensitive } } : {}),
+      };
+
+      // 🔹 Paginación
+      const total = await this.prisma.branch.count({ where: whereClause });
+      const lastPage = Math.ceil(total / limit);
+
+      // 🔹 Consulta final con selección de campos
+      const data = await this.prisma.branch.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        where: whereClause,
+        orderBy: { createdAt: 'asc' },
+        select: BranchSelect,
+      });
+
+      // 🔹 Retornar la respuesta formateada
+      return {
+        data,
+        meta: { total, page, lastPage },
+      };
+    } catch (error) {
+      console.error('❌ Error en findAll(Branch):', error);
+      // Manejo de errores personalizado
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException('Hubo un error al listar las sucursales');
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} branch`;
+  async findOne(id: string) {
+    const tenant = await this.prisma.branch.findUnique({
+      where: { id },
+      select: BranchSelect,
+    });
+
+    if (!tenant) {
+      throw new NotFoundException(`Tenant with id #${id} not found`);
+    }
+
+    return tenant;
+  }
+  async update(id: string, updateBranchDto: UpdateBranchDto) {
+    const { ...rest } = updateBranchDto;
+    await this.findOne(id);
+
+    return this.prisma.branch.update({
+      where: { id },
+      data: {
+        ...rest,
+      },
+      select: BranchSelect,
+    });
   }
 
-  update(id: number, updateBranchDto: UpdateBranchDto) {
-    return `This action updates a #${id} branch`;
-  }
+  async remove(id: string) {
+    await this.findOne(id);
 
-  remove(id: number) {
-    return `This action removes a #${id} branch`;
+    return this.prisma.tenant.update({
+      where: { id },
+      data: { active: false },
+      select: BranchSelect,
+    });
   }
 }

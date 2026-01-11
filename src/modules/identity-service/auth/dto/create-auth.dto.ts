@@ -1,4 +1,4 @@
-import { AuthProviderType } from "@/generated/prisma/enums";
+import { AuthProviderType } from "@/common";
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEmail, IsEnum, IsOptional, IsString } from "class-validator";
 
@@ -10,6 +10,13 @@ export class CreateAuthDto {
     enum: AuthProviderType,
   })
   provider!: AuthProviderType;
+
+  @IsString()
+  @ApiProperty({
+    example: '123456',
+    description: 'token firebase',
+  })
+  tokenFCM!: string;
 
   @IsOptional()
   @IsEmail()
