@@ -20,9 +20,9 @@ export enum TypeAction {
 }
 
 export enum AuthProviderType {
-  email,
-  google,
-  facebook,
-  apple,
-  phone,
+  email = 'email',
+  google = 'google',
+  facebook = 'facebook',
+  apple = 'apple',
+  phone = 'phone',
 }

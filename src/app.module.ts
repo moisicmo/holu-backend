@@ -7,6 +7,8 @@ import { CloudinaryModule } from './common/cloudinary/cloudinary.module';
 
 import { GoogledriveModule } from './common/googledrive/googledrive.module';
 import { GmailModule } from './common/gmail/gmail.module';
+
+import { AvatarsModule } from './modules/identity-service/avatars/avatars.module';
 import { AuthModule } from './modules/identity-service/auth/auth.module';
 import { UsersModule } from './modules/identity-service/users/users.module';
 
@@ -21,7 +23,6 @@ import { RadiosModule } from './modules/holu-prime/radios/radios.module';
 import { ActivitiesModule } from './modules/holu-prime/activities/activities.module';
 import { PhisicalRecordsModule } from './modules/holu-prime/physical-records/physical-records.module';
 import { RoutinesModule } from './modules/holu-prime/routines/routines.module';
-import { AvatarsModule } from './modules/identity-service/avatars/avatars.module';
 @Module({
   imports: [
     PrismaModule,
@@ -29,6 +30,7 @@ import { AvatarsModule } from './modules/identity-service/avatars/avatars.module
     GoogledriveModule,
     GmailModule,
 
+    AvatarsModule,
     AuthModule,
     UsersModule,
 
@@ -43,7 +45,6 @@ import { AvatarsModule } from './modules/identity-service/avatars/avatars.module
     RoutinesModule,
     HabitsModule,
     ActivitiesModule,
-    AvatarsModule,
   ],
   providers: [
     PrismaService,
