@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { ActivitiesService } from './activities.service';
 import { CreateActivityDto } from './dto/create-activity.dto';
 import { UpdateActivityDto } from './dto/update-activity.dto';
-import { checkAbilities, CurrentUser } from '@/decorator';
+import { checkAbilities, CurrentUser, Public } from '@/decorator';
 import { PaginationDto, TypeAction, TypeSubject } from '@/common';
 import { JwtPayload } from '@/modules/identity-service/auth/entities/jwt-payload.interface';
 import { CreateActivityProgressDto } from './dto/create-activity-progress.dto';
@@ -11,6 +11,7 @@ import { CreateActivityProgressDto } from './dto/create-activity-progress.dto';
 export class ActivitiesController {
   constructor(private readonly activitiesService: ActivitiesService) { }
 
+  @Public()
   @Post()
   @checkAbilities({ action: TypeAction.crear, subject: TypeSubject.activities })
   create(@CurrentUser() user: JwtPayload, @Body() createActivityDto: CreateActivityDto) {

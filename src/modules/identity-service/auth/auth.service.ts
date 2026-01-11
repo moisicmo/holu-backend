@@ -122,7 +122,8 @@ export class AuthService {
     user: UserEntity,
     email: string,
     tokenFCM: string,
-    requestInfo: RequestInfo) {
+    requestInfo: RequestInfo,
+  ) {
     const { userAgent, ipAddress } = requestInfo;
     const tokenPayload = {
       id: user.id,

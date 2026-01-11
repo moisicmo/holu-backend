@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { PhysicalRecordsService } from './physical-records.service';
 import { CreatePhysicalRecordDto } from './dto/create-physical-record.dto';
 import { UpdatePhysicalRecordDto } from './dto/update-physical-record.dto';
-import { checkAbilities, CurrentUser } from '@/decorator';
+import { checkAbilities, CurrentUser, Public } from '@/decorator';
 import { JwtPayload } from '@/modules/identity-service/auth/entities/jwt-payload.interface';
 import { PaginationDto, TypeAction, TypeSubject } from '@/common';
 
@@ -10,6 +10,7 @@ import { PaginationDto, TypeAction, TypeSubject } from '@/common';
 export class PhysicalRecordsController {
   constructor(private readonly physicalRecordsService: PhysicalRecordsService) { }
 
+  @Public()
   @Post()
   @checkAbilities({ action: TypeAction.crear, subject: TypeSubject.physicalRecord })
   create(@CurrentUser() user: JwtPayload, @Body() createPhysicalRecordDto: CreatePhysicalRecordDto) {
