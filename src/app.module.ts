@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 import { PrismaModule } from './prisma/prisma.module';
 import { PrismaService } from './prisma/prisma.service';
 import { APP_GUARD } from '@nestjs/core';
@@ -25,6 +27,10 @@ import { PhisicalRecordsModule } from './modules/holu-prime/physical-records/phy
 import { RoutinesModule } from './modules/holu-prime/routines/routines.module';
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'public'),
+      serveRoot: '/static',
+    }),
     PrismaModule,
     CloudinaryModule,
     GoogledriveModule,
