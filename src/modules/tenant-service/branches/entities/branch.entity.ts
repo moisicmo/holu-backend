@@ -6,9 +6,13 @@ export type BranchType = Prisma.BranchGetPayload<{
 
 export const BranchSelect = {
   id: true,
-  tenant: true,
+  // tenant: true,
   name: true,
-  address: true,
+  city: true,
+  zone: true,
+  detail: true,
+  latitude: true,
+  longitude: true,
   phone: true,
   schedule: true
 };
