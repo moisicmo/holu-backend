@@ -28,33 +28,33 @@ export type UserHabitMinAggregateOutputType = {
   id: string | null
   userId: string | null
   title: string | null
+  type: $Enums.HabitType | null
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
   updatedBy: string | null
-  type: $Enums.HabitType | null
 }
 
 export type UserHabitMaxAggregateOutputType = {
   id: string | null
   userId: string | null
   title: string | null
+  type: $Enums.HabitType | null
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
   updatedBy: string | null
-  type: $Enums.HabitType | null
 }
 
 export type UserHabitCountAggregateOutputType = {
   id: number
   userId: number
   title: number
+  type: number
   createdAt: number
   updatedAt: number
   createdBy: number
   updatedBy: number
-  type: number
   _all: number
 }
 
@@ -63,33 +63,33 @@ export type UserHabitMinAggregateInputType = {
   id?: true
   userId?: true
   title?: true
+  type?: true
   createdAt?: true
   updatedAt?: true
   createdBy?: true
   updatedBy?: true
-  type?: true
 }
 
 export type UserHabitMaxAggregateInputType = {
   id?: true
   userId?: true
   title?: true
+  type?: true
   createdAt?: true
   updatedAt?: true
   createdBy?: true
   updatedBy?: true
-  type?: true
 }
 
 export type UserHabitCountAggregateInputType = {
   id?: true
   userId?: true
   title?: true
+  type?: true
   createdAt?: true
   updatedAt?: true
   createdBy?: true
   updatedBy?: true
-  type?: true
   _all?: true
 }
 
@@ -169,11 +169,11 @@ export type UserHabitGroupByOutputType = {
   id: string
   userId: string
   title: string
+  type: $Enums.HabitType
   createdAt: Date
   updatedAt: Date
   createdBy: string
   updatedBy: string | null
-  type: $Enums.HabitType
   _count: UserHabitCountAggregateOutputType | null
   _min: UserHabitMinAggregateOutputType | null
   _max: UserHabitMaxAggregateOutputType | null
@@ -201,11 +201,11 @@ export type UserHabitWhereInput = {
   id?: Prisma.UuidFilter<"UserHabit"> | string
   userId?: Prisma.UuidFilter<"UserHabit"> | string
   title?: Prisma.StringFilter<"UserHabit"> | string
+  type?: Prisma.EnumHabitTypeFilter<"UserHabit"> | $Enums.HabitType
   createdAt?: Prisma.DateTimeFilter<"UserHabit"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"UserHabit"> | Date | string
   createdBy?: Prisma.StringFilter<"UserHabit"> | string
   updatedBy?: Prisma.StringNullableFilter<"UserHabit"> | string | null
-  type?: Prisma.EnumHabitTypeFilter<"UserHabit"> | $Enums.HabitType
   progress?: Prisma.HabitProgressListRelationFilter
 }
 
@@ -213,11 +213,11 @@ export type UserHabitOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
-  type?: Prisma.SortOrder
   progress?: Prisma.HabitProgressOrderByRelationAggregateInput
 }
 
@@ -228,11 +228,11 @@ export type UserHabitWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.UserHabitWhereInput | Prisma.UserHabitWhereInput[]
   userId?: Prisma.UuidFilter<"UserHabit"> | string
   title?: Prisma.StringFilter<"UserHabit"> | string
+  type?: Prisma.EnumHabitTypeFilter<"UserHabit"> | $Enums.HabitType
   createdAt?: Prisma.DateTimeFilter<"UserHabit"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"UserHabit"> | Date | string
   createdBy?: Prisma.StringFilter<"UserHabit"> | string
   updatedBy?: Prisma.StringNullableFilter<"UserHabit"> | string | null
-  type?: Prisma.EnumHabitTypeFilter<"UserHabit"> | $Enums.HabitType
   progress?: Prisma.HabitProgressListRelationFilter
 }, "id">
 
@@ -240,11 +240,11 @@ export type UserHabitOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
-  type?: Prisma.SortOrder
   _count?: Prisma.UserHabitCountOrderByAggregateInput
   _max?: Prisma.UserHabitMaxOrderByAggregateInput
   _min?: Prisma.UserHabitMinOrderByAggregateInput
@@ -257,22 +257,22 @@ export type UserHabitScalarWhereWithAggregatesInput = {
   id?: Prisma.UuidWithAggregatesFilter<"UserHabit"> | string
   userId?: Prisma.UuidWithAggregatesFilter<"UserHabit"> | string
   title?: Prisma.StringWithAggregatesFilter<"UserHabit"> | string
+  type?: Prisma.EnumHabitTypeWithAggregatesFilter<"UserHabit"> | $Enums.HabitType
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"UserHabit"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"UserHabit"> | Date | string
   createdBy?: Prisma.StringWithAggregatesFilter<"UserHabit"> | string
   updatedBy?: Prisma.StringNullableWithAggregatesFilter<"UserHabit"> | string | null
-  type?: Prisma.EnumHabitTypeWithAggregatesFilter<"UserHabit"> | $Enums.HabitType
 }
 
 export type UserHabitCreateInput = {
   id?: string
   userId: string
   title: string
+  type?: $Enums.HabitType
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
   updatedBy?: string | null
-  type?: $Enums.HabitType
   progress?: Prisma.HabitProgressCreateNestedManyWithoutHabitInput
 }
 
@@ -280,11 +280,11 @@ export type UserHabitUncheckedCreateInput = {
   id?: string
   userId: string
   title: string
+  type?: $Enums.HabitType
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
   updatedBy?: string | null
-  type?: $Enums.HabitType
   progress?: Prisma.HabitProgressUncheckedCreateNestedManyWithoutHabitInput
 }
 
@@ -292,11 +292,11 @@ export type UserHabitUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumHabitTypeFieldUpdateOperationsInput | $Enums.HabitType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  type?: Prisma.EnumHabitTypeFieldUpdateOperationsInput | $Enums.HabitType
   progress?: Prisma.HabitProgressUpdateManyWithoutHabitNestedInput
 }
 
@@ -304,11 +304,11 @@ export type UserHabitUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumHabitTypeFieldUpdateOperationsInput | $Enums.HabitType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  type?: Prisma.EnumHabitTypeFieldUpdateOperationsInput | $Enums.HabitType
   progress?: Prisma.HabitProgressUncheckedUpdateManyWithoutHabitNestedInput
 }
 
@@ -316,66 +316,66 @@ export type UserHabitCreateManyInput = {
   id?: string
   userId: string
   title: string
+  type?: $Enums.HabitType
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
   updatedBy?: string | null
-  type?: $Enums.HabitType
 }
 
 export type UserHabitUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumHabitTypeFieldUpdateOperationsInput | $Enums.HabitType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  type?: Prisma.EnumHabitTypeFieldUpdateOperationsInput | $Enums.HabitType
 }
 
 export type UserHabitUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumHabitTypeFieldUpdateOperationsInput | $Enums.HabitType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  type?: Prisma.EnumHabitTypeFieldUpdateOperationsInput | $Enums.HabitType
 }
 
 export type UserHabitCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
-  type?: Prisma.SortOrder
 }
 
 export type UserHabitMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
-  type?: Prisma.SortOrder
 }
 
 export type UserHabitMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrder
-  type?: Prisma.SortOrder
 }
 
 export type UserHabitScalarRelationFilter = {
@@ -405,22 +405,22 @@ export type UserHabitCreateWithoutProgressInput = {
   id?: string
   userId: string
   title: string
+  type?: $Enums.HabitType
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
   updatedBy?: string | null
-  type?: $Enums.HabitType
 }
 
 export type UserHabitUncheckedCreateWithoutProgressInput = {
   id?: string
   userId: string
   title: string
+  type?: $Enums.HabitType
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
   updatedBy?: string | null
-  type?: $Enums.HabitType
 }
 
 export type UserHabitCreateOrConnectWithoutProgressInput = {
@@ -443,22 +443,22 @@ export type UserHabitUpdateWithoutProgressInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumHabitTypeFieldUpdateOperationsInput | $Enums.HabitType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  type?: Prisma.EnumHabitTypeFieldUpdateOperationsInput | $Enums.HabitType
 }
 
 export type UserHabitUncheckedUpdateWithoutProgressInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumHabitTypeFieldUpdateOperationsInput | $Enums.HabitType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  type?: Prisma.EnumHabitTypeFieldUpdateOperationsInput | $Enums.HabitType
 }
 
 
@@ -496,11 +496,11 @@ export type UserHabitSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   id?: boolean
   userId?: boolean
   title?: boolean
+  type?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
   updatedBy?: boolean
-  type?: boolean
   progress?: boolean | Prisma.UserHabit$progressArgs<ExtArgs>
   _count?: boolean | Prisma.UserHabitCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userHabit"]>
@@ -509,36 +509,36 @@ export type UserHabitSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   id?: boolean
   userId?: boolean
   title?: boolean
+  type?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
   updatedBy?: boolean
-  type?: boolean
 }, ExtArgs["result"]["userHabit"]>
 
 export type UserHabitSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
   title?: boolean
+  type?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
   updatedBy?: boolean
-  type?: boolean
 }, ExtArgs["result"]["userHabit"]>
 
 export type UserHabitSelectScalar = {
   id?: boolean
   userId?: boolean
   title?: boolean
+  type?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
   updatedBy?: boolean
-  type?: boolean
 }
 
-export type UserHabitOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "title" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy" | "type", ExtArgs["result"]["userHabit"]>
+export type UserHabitOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "title" | "type" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["userHabit"]>
 export type UserHabitInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   progress?: boolean | Prisma.UserHabit$progressArgs<ExtArgs>
   _count?: boolean | Prisma.UserHabitCountOutputTypeDefaultArgs<ExtArgs>
@@ -555,11 +555,11 @@ export type $UserHabitPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     id: string
     userId: string
     title: string
+    type: $Enums.HabitType
     createdAt: Date
     updatedAt: Date
     createdBy: string
     updatedBy: string | null
-    type: $Enums.HabitType
   }, ExtArgs["result"]["userHabit"]>
   composites: {}
 }
@@ -987,11 +987,11 @@ export interface UserHabitFieldRefs {
   readonly id: Prisma.FieldRef<"UserHabit", 'String'>
   readonly userId: Prisma.FieldRef<"UserHabit", 'String'>
   readonly title: Prisma.FieldRef<"UserHabit", 'String'>
+  readonly type: Prisma.FieldRef<"UserHabit", 'HabitType'>
   readonly createdAt: Prisma.FieldRef<"UserHabit", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"UserHabit", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"UserHabit", 'String'>
   readonly updatedBy: Prisma.FieldRef<"UserHabit", 'String'>
-  readonly type: Prisma.FieldRef<"UserHabit", 'HabitType'>
 }
     
 

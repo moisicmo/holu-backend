@@ -398,6 +398,7 @@ export const ModelName = {
   Branch: 'Branch',
   Subscription: 'Subscription',
   Plan: 'Plan',
+  PlanSchedule: 'PlanSchedule',
   PaymentStates: 'PaymentStates',
   Payment: 'Payment',
   Invoice: 'Invoice',
@@ -426,7 +427,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "radio" | "radioCategory" | "radioRating" | "user" | "authSession" | "authProvider" | "userRole" | "role" | "permission" | "template" | "tenant" | "branch" | "subscription" | "plan" | "paymentStates" | "payment" | "invoice" | "physicalRecord" | "equipment" | "branchEquipment" | "routineDay" | "routine" | "userRoutine" | "userHabit" | "habitProgress" | "dailyActivity" | "activityProgress"
+    modelProps: "radio" | "radioCategory" | "radioRating" | "user" | "authSession" | "authProvider" | "userRole" | "role" | "permission" | "template" | "tenant" | "branch" | "subscription" | "plan" | "planSchedule" | "paymentStates" | "payment" | "invoice" | "physicalRecord" | "equipment" | "branchEquipment" | "routineDay" | "routine" | "userRoutine" | "userHabit" | "habitProgress" | "dailyActivity" | "activityProgress"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1463,6 +1464,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.PlanCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.PlanCountAggregateOutputType> | number
+        }
+      }
+    }
+    PlanSchedule: {
+      payload: Prisma.$PlanSchedulePayload<ExtArgs>
+      fields: Prisma.PlanScheduleFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PlanScheduleFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanSchedulePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PlanScheduleFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanSchedulePayload>
+        }
+        findFirst: {
+          args: Prisma.PlanScheduleFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanSchedulePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PlanScheduleFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanSchedulePayload>
+        }
+        findMany: {
+          args: Prisma.PlanScheduleFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanSchedulePayload>[]
+        }
+        create: {
+          args: Prisma.PlanScheduleCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanSchedulePayload>
+        }
+        createMany: {
+          args: Prisma.PlanScheduleCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PlanScheduleCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanSchedulePayload>[]
+        }
+        delete: {
+          args: Prisma.PlanScheduleDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanSchedulePayload>
+        }
+        update: {
+          args: Prisma.PlanScheduleUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanSchedulePayload>
+        }
+        deleteMany: {
+          args: Prisma.PlanScheduleDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PlanScheduleUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PlanScheduleUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanSchedulePayload>[]
+        }
+        upsert: {
+          args: Prisma.PlanScheduleUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanSchedulePayload>
+        }
+        aggregate: {
+          args: Prisma.PlanScheduleAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePlanSchedule>
+        }
+        groupBy: {
+          args: Prisma.PlanScheduleGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PlanScheduleGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PlanScheduleCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PlanScheduleCountAggregateOutputType> | number
         }
       }
     }
@@ -2707,6 +2782,22 @@ export const PlanScalarFieldEnum = {
 export type PlanScalarFieldEnum = (typeof PlanScalarFieldEnum)[keyof typeof PlanScalarFieldEnum]
 
 
+export const PlanScheduleScalarFieldEnum = {
+  id: 'id',
+  planId: 'planId',
+  dayOfWeek: 'dayOfWeek',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
+} as const
+
+export type PlanScheduleScalarFieldEnum = (typeof PlanScheduleScalarFieldEnum)[keyof typeof PlanScheduleScalarFieldEnum]
+
+
 export const PaymentStatesScalarFieldEnum = {
   id: 'id',
   paymentId: 'paymentId',
@@ -2848,11 +2939,11 @@ export const UserHabitScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   title: 'title',
+  type: 'type',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   createdBy: 'createdBy',
-  updatedBy: 'updatedBy',
-  type: 'type'
+  updatedBy: 'updatedBy'
 } as const
 
 export type UserHabitScalarFieldEnum = (typeof UserHabitScalarFieldEnum)[keyof typeof UserHabitScalarFieldEnum]
@@ -3199,6 +3290,7 @@ export type GlobalOmitConfig = {
   branch?: Prisma.BranchOmit
   subscription?: Prisma.SubscriptionOmit
   plan?: Prisma.PlanOmit
+  planSchedule?: Prisma.PlanScheduleOmit
   paymentStates?: Prisma.PaymentStatesOmit
   payment?: Prisma.PaymentOmit
   invoice?: Prisma.InvoiceOmit

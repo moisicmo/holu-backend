@@ -65,6 +65,7 @@ export const ModelName = {
   Branch: 'Branch',
   Subscription: 'Subscription',
   Plan: 'Plan',
+  PlanSchedule: 'PlanSchedule',
   PaymentStates: 'PaymentStates',
   Payment: 'Payment',
   Invoice: 'Invoice',
@@ -336,6 +337,22 @@ export const PlanScalarFieldEnum = {
 export type PlanScalarFieldEnum = (typeof PlanScalarFieldEnum)[keyof typeof PlanScalarFieldEnum]
 
 
+export const PlanScheduleScalarFieldEnum = {
+  id: 'id',
+  planId: 'planId',
+  dayOfWeek: 'dayOfWeek',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
+} as const
+
+export type PlanScheduleScalarFieldEnum = (typeof PlanScheduleScalarFieldEnum)[keyof typeof PlanScheduleScalarFieldEnum]
+
+
 export const PaymentStatesScalarFieldEnum = {
   id: 'id',
   paymentId: 'paymentId',
@@ -477,11 +494,11 @@ export const UserHabitScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   title: 'title',
+  type: 'type',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   createdBy: 'createdBy',
-  updatedBy: 'updatedBy',
-  type: 'type'
+  updatedBy: 'updatedBy'
 } as const
 
 export type UserHabitScalarFieldEnum = (typeof UserHabitScalarFieldEnum)[keyof typeof UserHabitScalarFieldEnum]

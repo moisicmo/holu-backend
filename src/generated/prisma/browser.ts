@@ -88,6 +88,11 @@ export type Subscription = Prisma.SubscriptionModel
  */
 export type Plan = Prisma.PlanModel
 /**
+ * Model PlanSchedule
+ * 
+ */
+export type PlanSchedule = Prisma.PlanScheduleModel
+/**
  * Model PaymentStates
  * 
  */

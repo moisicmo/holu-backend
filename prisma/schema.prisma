@@ -70,8 +70,8 @@ model User {
   image          String?
   numberDocument String?        @map("number_document")
   typeDocument   TypeDocument?  @default(dni) @map("type_document")
-  name           String         @db.VarChar
-  lastName       String         @map("last_name") @db.VarChar
+  name           String
+  lastName       String         @map("last_name")
   gender         Gender?
   email          String         @unique
   birthDate      DateTime?
@@ -190,8 +190,8 @@ model Template {
 model Tenant {
   id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   templateId   String   @map("template_id") @db.Uuid
-  notionApiKey String?
-  notionDbId   String?
+  notionApiKey String?  @map("notion_api_key")
+  notionDbId   String?  @map("notion_db_id")
   name         String
   image        String?
   colors       String[]
@@ -211,9 +211,9 @@ model Branch {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   tenantId  String   @map("tenant_id") @db.Uuid
   name      String
-  city      String   @db.VarChar
-  zone      String   @db.VarChar
-  detail    String   @db.VarChar
+  city      String
+  zone      String
+  detail    String
   latitude  Float?
   longitude Float?
   phone     String?
@@ -263,8 +263,25 @@ model Plan {
   createdBy    String         @map("created_by")
   updatedBy    String?        @map("updated_by")
   suscriptions Subscription[]
+  schedules    PlanSchedule[]
 
   @@map("plans")
+}
+
+model PlanSchedule {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  planId    String   @map("plan_id") @db.Uuid
+  dayOfWeek Int      @map("day_of_week") // 1=Lunes ... 7=Domingo
+  startTime String   @map("start_time") // "06:00"
+  endTime   String   @map("end_time") // "10:00"
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  createdBy String   @map("created_by")
+  updatedBy String?  @map("updated_by")
+  plan      Plan     @relation(fields: [planId], references: [id])
+
+  @@map("plan_schedules")
 }
 
 // Payment service

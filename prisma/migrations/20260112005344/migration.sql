@@ -72,8 +72,8 @@ CREATE TABLE "users" (
     "image" TEXT,
     "number_document" TEXT,
     "type_document" "TypeDocument" DEFAULT 'dni',
-    "name" VARCHAR NOT NULL,
-    "last_name" VARCHAR NOT NULL,
+    "name" TEXT NOT NULL,
+    "last_name" TEXT NOT NULL,
     "gender" "Gender",
     "email" TEXT NOT NULL,
     "birthDate" TIMESTAMP(3),
@@ -184,8 +184,8 @@ CREATE TABLE "templates" (
 CREATE TABLE "tenants" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "template_id" UUID NOT NULL,
-    "notionApiKey" TEXT,
-    "notionDbId" TEXT,
+    "notion_api_key" TEXT,
+    "notion_db_id" TEXT,
     "name" TEXT NOT NULL,
     "image" TEXT,
     "colors" TEXT[],
@@ -204,9 +204,9 @@ CREATE TABLE "branches" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "tenant_id" UUID NOT NULL,
     "name" TEXT NOT NULL,
-    "city" VARCHAR NOT NULL,
-    "zone" VARCHAR NOT NULL,
-    "detail" VARCHAR NOT NULL,
+    "city" TEXT NOT NULL,
+    "zone" TEXT NOT NULL,
+    "detail" TEXT NOT NULL,
     "latitude" DOUBLE PRECISION,
     "longitude" DOUBLE PRECISION,
     "phone" TEXT,
@@ -254,6 +254,22 @@ CREATE TABLE "plans" (
     "updated_by" TEXT,
 
     CONSTRAINT "plans_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "plan_schedules" (
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "plan_id" UUID NOT NULL,
+    "day_of_week" INTEGER NOT NULL,
+    "start_time" TEXT NOT NULL,
+    "end_time" TEXT NOT NULL,
+    "active" BOOLEAN NOT NULL DEFAULT true,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
+
+    CONSTRAINT "plan_schedules_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -398,11 +414,11 @@ CREATE TABLE "user_habits" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "user_id" UUID NOT NULL,
     "title" TEXT NOT NULL,
+    "type" "HabitType" NOT NULL DEFAULT 'general',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
     "updated_by" TEXT,
-    "type" "HabitType" NOT NULL DEFAULT 'general',
 
     CONSTRAINT "user_habits_pkey" PRIMARY KEY ("id")
 );
@@ -530,6 +546,9 @@ ALTER TABLE "branches" ADD CONSTRAINT "branches_tenant_id_fkey" FOREIGN KEY ("te
 
 -- AddForeignKey
 ALTER TABLE "subscriptions" ADD CONSTRAINT "subscriptions_plan_id_fkey" FOREIGN KEY ("plan_id") REFERENCES "plans"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "plan_schedules" ADD CONSTRAINT "plan_schedules_plan_id_fkey" FOREIGN KEY ("plan_id") REFERENCES "plans"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "payment_states" ADD CONSTRAINT "payment_states_payment_id_fkey" FOREIGN KEY ("payment_id") REFERENCES "payments"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
