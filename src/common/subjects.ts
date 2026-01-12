@@ -11,6 +11,7 @@ export enum TypeSubject {
   habit,
   activities,
   physicalRecord,
+  plan,
 }
 export enum TypeAction {
   leer,

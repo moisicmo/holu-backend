@@ -1,20 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { PlansService } from './plans.service';
 import { CreatePlanDto } from './dto/create-plan.dto';
 import { UpdatePlanDto } from './dto/update-plan.dto';
+import { checkAbilities } from '@/decorator';
+import { PaginationDto, TypeAction, TypeSubject } from '@/common';
 
 @Controller('plans')
 export class PlansController {
-  constructor(private readonly plansService: PlansService) {}
+  constructor(private readonly plansService: PlansService) { }
 
   @Post()
   create(@Body() createPlanDto: CreatePlanDto) {
     return this.plansService.create(createPlanDto);
   }
 
-  @Get()
-  findAll() {
-    return this.plansService.findAll();
+  @Get('/branch/:branchId')
+  @checkAbilities({ action: TypeAction.leer, subject: TypeSubject.plan })
+  findAll(@Param('userId') userId: string, @Query() paginationDto: PaginationDto) {
+    return this.plansService.findAllByBranch(userId, paginationDto);
   }
 
   @Get(':id')
