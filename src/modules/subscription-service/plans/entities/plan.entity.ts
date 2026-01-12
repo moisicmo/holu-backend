@@ -6,7 +6,6 @@ export type PlanType = Prisma.PlanGetPayload<{
 
 export const PlanScheduleSelect = {
   id: true,
-  idplanId: true,
   dayOfWeek: true,
   startTime: true,
   endTime: true,
