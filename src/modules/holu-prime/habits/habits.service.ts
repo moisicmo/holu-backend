@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateHabitProgressDto } from './dto/create-habit-progress.dto';
 import { UpdateHabitDto } from './dto/update-habit.dto';
 import { PrismaService } from '@/prisma/prisma.service';
@@ -24,6 +24,7 @@ export class HabitsService {
           ...restHabitDto,
           createdBy: email,
         },
+        select: UserHabitSelect,
       });
 
     } catch (error) {
