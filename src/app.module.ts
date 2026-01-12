@@ -18,6 +18,8 @@ import { TemplatesModule } from './modules/tenant-service/templates/templates.mo
 import { TenantsModule } from './modules/tenant-service/tenants/tenants.module';
 import { BranchesModule } from './modules/tenant-service/branches/branches.module';
 
+import { PlansModule } from './modules/subscription-service/plans/plans.module';
+
 import { InvoicesModule } from './modules/subscription-service/invoices/invoices.module';
 
 import { HabitsModule } from './modules/holu-prime/habits/habits.module';
@@ -43,6 +45,8 @@ import { RoutinesModule } from './modules/holu-prime/routines/routines.module';
     TemplatesModule,
     TenantsModule,
     BranchesModule,
+
+    PlansModule,
 
     InvoicesModule,
     
