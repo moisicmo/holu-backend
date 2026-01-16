@@ -9,14 +9,17 @@ interface EnvVars {
   CLOUDINARY_API_SECRET: string;
   GOOGLEDRIVE_CLIENT_ID: string;
   GOOGLEDRIVE_CLIENT_SECRET: string;
-  GOOGLEDRIVE_REDIRECT_URI:string;
-  GOOGLEDRIVE_ACCESS_TOKEN:string;
-  GOOGLEDRIVE_REFRESH_TOKEN:string;
-  GOOGLE_SENDER_EMAIL:string;
-  GOOGLE_CLIENT_ID:string;
-  GOOGLE_CLIENT_ID_IOS:string;
-  GOOGLE_CLIENT_ID_ANDROID:string;
-  FB_APP_ID:string;
+  GOOGLEDRIVE_REDIRECT_URI: string;
+  GOOGLEDRIVE_ACCESS_TOKEN: string;
+  GOOGLEDRIVE_REFRESH_TOKEN: string;
+  GOOGLE_SENDER_EMAIL: string;
+  GOOGLE_CLIENT_ID: string;
+  GOOGLE_CLIENT_ID_IOS: string;
+  GOOGLE_CLIENT_ID_ANDROID: string;
+  FB_APP_ID: string;
+  FIREBASE_PROJECT_ID: string;
+  FIREBASE_PRIVATE_KEY: string;
+  FIREBASE_CLIENT_EMAIL: string;
 }
 
 const envsSchema = joi
@@ -36,6 +39,9 @@ const envsSchema = joi
     GOOGLE_CLIENT_ID_IOS: joi.string().required(),
     GOOGLE_CLIENT_ID_ANDROID: joi.string().required(),
     FB_APP_ID: joi.string().required(),
+    FIREBASE_PROJECT_ID: joi.string().required(),
+    FIREBASE_PRIVATE_KEY: joi.string().required(),
+    FIREBASE_CLIENT_EMAIL: joi.string().required(),
   })
   .unknown(true);
 
@@ -65,4 +71,7 @@ export const envs = {
   googleClientIdIos: envVars.GOOGLE_CLIENT_ID_IOS,
   googleClientIdAndroid: envVars.GOOGLE_CLIENT_ID_ANDROID,
   fbAppId: envVars.FB_APP_ID,
+  firebaseProjectId: envVars.FIREBASE_PROJECT_ID,
+  firebasePrivateKey: envVars.FIREBASE_PRIVATE_KEY,
+  firebaseClientEmail: envVars.FIREBASE_CLIENT_EMAIL,
 };

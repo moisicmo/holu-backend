@@ -87,6 +87,7 @@ export class AuthService {
     const user = await this.prisma.user.findFirst({
       where: {
         authProviders: { some: { email } },
+        active: true,
       },
       select: UserSelect,
     });

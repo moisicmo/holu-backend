@@ -27,8 +27,12 @@ import { RadiosModule } from './modules/holu-prime/radios/radios.module';
 import { ActivitiesModule } from './modules/holu-prime/activities/activities.module';
 import { PhysicalRecordsModule } from './modules/holu-prime/physical-records/physical-records.module';
 import { RoutinesModule } from './modules/holu-prime/routines/routines.module';
+import { PushNotificationModule } from './common/push-notification/push-notification.module';
+import { ScheduledNotificationsModule } from './common/scheduled-notifications/scheduled-notifications.module';
+import { ScheduleModule } from '@nestjs/schedule';
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     ServeStaticModule.forRoot({
       rootPath: join(process.cwd(), 'public'),
       serveRoot: '/static',
@@ -55,6 +59,8 @@ import { RoutinesModule } from './modules/holu-prime/routines/routines.module';
     RoutinesModule,
     HabitsModule,
     ActivitiesModule,
+    PushNotificationModule,
+    ScheduledNotificationsModule,
   ],
   providers: [
     PrismaService,

@@ -6,6 +6,8 @@ import { CreateHabitDto } from './dto/create-habit.dto';
 import { Prisma } from '@/generated/prisma/client';
 import { UserHabitSelect, UserHabitType } from './entities/habit.entity';
 import { PaginationDto, PaginationResult } from '@/common';
+import { HABIT_I18N } from '@/common/habits/habits.i18n';
+import { HABIT_TEMPLATES } from '@/common/habits/habits.constants';
 
 @Injectable()
 export class HabitsService {
@@ -136,6 +138,14 @@ export class HabitsService {
     }
   }
 
+  getHabits(lang = 'es') {
+    const translations = HABIT_I18N[lang] ?? HABIT_I18N.en;
+    return HABIT_TEMPLATES.map(habit => ({
+      code: habit.code,
+      type: habit.type,
+      label: translations[habit.code],
+    }));
+  }
 
   findOne(id: string) {
     return `This action returns a #${id} habit`;
